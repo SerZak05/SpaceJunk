@@ -1,28 +1,23 @@
 #include "drawer.h"
 
 #include <iostream>
-#include <SDL.h>
-#include <SDL_image.h>
 #include "merrors.h"
 
-bool Drawer::init()
+Drawer::Drawer() : mWindow(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "SpaceJunk")
 {
-	bool success = true;
-	// list string , list task errors
-	if (!mErr::maccept(!SDL_Init(SDL_INIT_EVERYTHING), "Failed to init SDL!", success)) {
-		mErr::oerr() << SDL_GetError() << std::endl;
+	bg.r = bg.g = bg.b = 100;
+}
+
+Drawer* Drawer::inst = nullptr;
+Drawer* Drawer::getInst() {
+	if (inst == nullptr) {
+		inst = new Drawer();
 	}
-	else {
-		if (!mErr::maccept(IMG_Init(IMG_INIT_PNG), "Failed to init IMG!", success)) {
-			mErr::oerr() << IMG_GetError() << std::endl;
-		}
-		if (SDL_CreateWindowAndRenderer(SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_INPUT_FOCUS | SDL_WINDOW_SHOWN, &mWindow, &mRenderer) == -1) {
-			mErr::oerr() << "Failed to create window and render! Error: " << SDL_GetError() << std::endl;
-			success = false;
-		}
-	}
-	bg.a = 255;
-	return success;
+	return inst;
+}
+
+void Drawer::cleanup() {
+	delete inst;
 }
 
 bool Drawer::loadMedia() {
@@ -34,8 +29,8 @@ bool Drawer::loadMedia() {
 bool Drawer::loadTexture(const std::string& name) {
 	bool success = true;
 	if (mTextures.find(name) == mTextures.end()) {
-		LTexture* newTexture = new LTexture();
-		if (!newTexture->loadFromFile(mediaFolder + name, mRenderer)) {
+		sf::Texture newTexture;
+		if (!newTexture.loadFromFile(mediaFolder + name)) {
 			// errors.add(...)
 			mErr::oerr() << "Failed to load image: " << name << std::endl;
 			success = false; //= errors.isNotEmpty()
@@ -48,26 +43,38 @@ bool Drawer::loadTexture(const std::string& name) {
 }
 
 bool Drawer::setColor(int r, int g, int b, int a) {
-	return SDL_SetRenderDrawColor(mRenderer, r, g, b, a);
+	mColor = sf::Color(r, g, b, a);
+	return true;
 }
 
 bool Drawer::drawPoint(Geom::Vector v) {
 	return drawPoint(v.x, v.y);
 }
 
-bool Drawer::drawPoint(int x, int y) {
-	return SDL_RenderDrawPoint(mRenderer, x, y);
+bool Drawer::drawPoint(float x, float y) {
+	sf::RectangleShape point(sf::Vector2f(1, 1));
+	point.setFillColor(mColor);
+	point.setPosition(x, y);
+	mWindow.draw(point);
+	return true;
 }
 
-bool Drawer::drawLine(int x1, int y1, int x2, int y2) {
-	return SDL_RenderDrawLine(mRenderer, x1, y1, x2, y2);
+bool Drawer::drawLine(float x1, float y1, float x2, float y2) {
+	sf::Vertex lines[] =
+	{
+		sf::Vertex(sf::Vector2f(x1, y1)),
+		sf::Vertex(sf::Vector2f(x2, y2))
+
+	};
+	mWindow.draw(lines, 2, sf::Lines);
+	return true;
 }
 
 bool Drawer::drawLine(const Geom::Vector& a, const Geom::Vector& b) {
 	return drawLine(a.x, a.y, b.x, b.y);
 }
 
-bool Drawer::drawLines(const std::vector<Geom::Vector>& v) {
+/*bool Drawer::drawLines(const std::vector<Geom::Vector>& v) {
 	bool success = true;
 	SDL_Point* a = new SDL_Point[v.size()];
 	for (int i = 0; i < v.size(); ++i) {
@@ -77,19 +84,14 @@ bool Drawer::drawLines(const std::vector<Geom::Vector>& v) {
 	success = SDL_RenderDrawLines(mRenderer, a, v.size());
 	delete[] a;
 	return success;
-}
+}*/
 
 bool Drawer::drawRect(const Geom::Vector& a, const Geom::Vector& b) {
-	SDL_Rect rect;
-	rect.x = a.x;
-	rect.y = a.y;
-	rect.w = b.x - a.x;
-	rect.h = b.y - a.y;
-	return drawRect(&rect);
-}
-
-bool Drawer::drawRect(const SDL_Rect* rect) {
-	return SDL_RenderDrawRect(mRenderer, rect);
+	sf::RectangleShape rect(sf::Vector2f(b.x - a.x, b.y - a.y));
+	rect.setPosition(a.x, a.y);
+	rect.setFillColor(mColor);
+	mWindow.draw(rect);
+	return true;
 }
 
 bool Drawer::drawRect(const Rect& rect) {
@@ -109,20 +111,15 @@ bool Drawer::drawTexture(const std::string& name, double x, double y) {
 		mErr::oerr() << "Did not find texture: " << name << std::endl;
 	}
 	else {
-		mTextures[name]->render(mRenderer, int(x), int(y));
+		sf::Sprite sprite;
+		sprite.setTexture(mTextures[name]);
+		sprite.setPosition(x, y);
+		mWindow.draw(sprite);
 	}
 	return success;
 }
 
 void Drawer::render() {
-	SDL_RenderPresent(mRenderer);
-	SDL_SetRenderDrawColor(mRenderer, bg.r, bg.g, bg.b, bg.a);
-	SDL_RenderClear(mRenderer);
-}
-
-void Drawer::cleanup() {
-	SDL_DestroyWindow(mWindow);
-	SDL_DestroyRenderer(mRenderer);
-	IMG_Quit();
-	SDL_Quit();
+	mWindow.display();
+	mWindow.clear(bg);
 }

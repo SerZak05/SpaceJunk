@@ -46,8 +46,8 @@ ActionManager::ActionManager() {
 }
 
 void ActionManager::loop() {
-	SDL_Event* e = new SDL_Event();
-	while (SDL_PollEvent(e)) { // pulling SDL_Event
+	sf::Event e;
+	while (Drawer::getInst()->mWindow.pollEvent(e)) { // pulling SDL_Event
 		// converting SDL to InputEvent for further use
 		InputEvent convertedEvent = convert(e);
 		// if don`t know how to convert, continue
@@ -57,10 +57,7 @@ void ActionManager::loop() {
 		// pushing into queue
 		InputEvent* convertedEvent_ptr = new InputEvent(convertedEvent);
 		userEventLoop.pushEvent(convertedEvent_ptr);
-		delete e;
-		e = new SDL_Event();
 	}
-	delete e;
 	// pulling input events
 	while (userEventLoop.pullEvent());
 }
@@ -173,8 +170,8 @@ std::map<Action, std::list<InputEvent>> ActionManager::loadConfig(const std::str
 			else if (eventTypeStr == "KEYBOARD") {
 				ev_activate.type = InputEventType::KEYBOARD;
 				ev_deactivate.type = InputEventType::KEYBOARD;
-				ev_activate.data = new KeyboardData((*ev_it).second["key"].As<std::string>()[0]);
-				ev_deactivate.data = new KeyboardData((*ev_it).second["key"].As<std::string>()[0]);
+				ev_activate.data = new KeyboardData((sf::Keyboard::Key)(*ev_it).second["key"].As<int>());
+				ev_deactivate.data = new KeyboardData((sf::Keyboard::Key)(*ev_it).second["key"].As<int>());
 			}
 			else {
 				//ev_activate.type = InputEventType::UNKNOWN;

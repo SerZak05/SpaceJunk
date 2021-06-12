@@ -1,6 +1,6 @@
 #include "keyboarddata.h"
 
-KeyboardData::KeyboardData(char key, int m) : key(key), modifiers(m) {}
+KeyboardData::KeyboardData(sf::Keyboard::Key key, int m) : key(key), modifiers(m) {}
 
 bool KeyboardData::operator<(const Data* d) const {
 	const KeyboardData* kd = static_cast<const KeyboardData*>(d);

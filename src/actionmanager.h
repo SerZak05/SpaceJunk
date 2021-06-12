@@ -1,9 +1,9 @@
 #pragma once
 #include <unordered_map>
-#include <SDL.h>
 #include <vector>
 #include <array>
 #include <map>
+#include <SFML/Window/Event.hpp>
 #include "action.h"
 #include "subscriber.h"
 #include "events/inputevent.h"
@@ -49,7 +49,7 @@ private:
 	std::unordered_map<std::string, Action> actions;
 
 	// constructs new InputEvent out of SDL_Event for later use
-	static InputEvent convert(const SDL_Event*);
+	static InputEvent convert(const sf::Event&);
 
 	// reads config map (action -> list of events to activate) and builds eventsToActions map
 	void readConfig(const std::map<Action, std::list<InputEvent>>&);

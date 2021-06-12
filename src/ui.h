@@ -1,5 +1,4 @@
 #pragma once
-#include <SDL.h>
 #include <list>
 #include "eventloop.h"
 #include "widget.h"

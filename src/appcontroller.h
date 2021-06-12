@@ -16,7 +16,6 @@ public:
 	std::list<EventType> acceptTypes() const;
 
 	UI ui;
-	Drawer mDrawer;
 private:
 	AppController();
 	~AppController();
