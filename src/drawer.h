@@ -30,6 +30,8 @@ public:
 	bool drawEllipse(const Geom::Vector&, const Geom::Vector&);
 	bool drawEllipse(const Rect&);
 
+	bool drawCircle(const Geom::Vector&, double radius);
+
 	bool loadTexture(const std::string& path);
 	bool loadImage(const std::string& path);
 	//bool drawTexture(const std::string& name, double x, double y);

@@ -115,6 +115,15 @@ bool Drawer::drawRect(const Rect& rect) {
 	return drawRect(rect.first, rect.second);
 }
 
+bool Drawer::drawCircle(const Geom::Vector& pos, double radius) {
+	sf::CircleShape circle(radius);
+	circle.setPosition(sf::Vector2f(pos.x, pos.y));
+	circle.setFillColor(mColor);
+	mWindow.draw(circle);
+	return true;
+}
+
+
 bool Drawer::drawEllipse(const Geom::Vector& a, const Geom::Vector& b) {
 	using namespace Geom;
 	Vector center = (a + b) * 0.5;

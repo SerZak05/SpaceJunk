@@ -18,6 +18,6 @@ void Bullet::update(double delta) {
 void Bullet::draw(Drawer* const d) const {
 	d->setColor(200, 0, 0);
 	Geom::Vector globalCoords = getGlobalCoords();
-	d->drawRect(globalCoords - Geom::Vector(20, 20), globalCoords + Geom::Vector(20, 20));
+	d->drawCircle(globalCoords, 10);
 	// mErr::oerr() << "Bullet drawn!" << std::endl;
 }
