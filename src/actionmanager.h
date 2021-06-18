@@ -22,9 +22,9 @@ public:
 	void loop();
 
 	// gets the data of the action of that type
-	Action getAction(const std::string&) const;
+	// Action getAction(const std::string&) const;
 	// checks, if specific type of action is active
-	bool isActionActive(const std::string&) const;
+	// bool isActionActive(const std::string&) const;
 
 	/// Subscriber methods
 	virtual std::list<InputEventType> acceptTypes() const;
@@ -38,6 +38,10 @@ public:
 
 	// source eventloop
 	EventLoop<InputEventType, InputEvent> userEventLoop;
+
+	EventLoop<std::string, Action> actionLoop;
+
+	void addAction(Action*);
 	
 private:
 	ActionManager();
@@ -46,7 +50,7 @@ private:
 	// Event -> Action ('w' on keyboard event -> UP action)
 	std::map<InputEvent, Action, InputEvent::Comp> eventsToActions;
 	// Active actions
-	std::unordered_map<std::string, Action> actions;
+	// std::unordered_map<std::string, Action> actions;
 
 	// constructs new InputEvent out of SDL_Event for later use
 	static InputEvent convert(const sf::Event&);

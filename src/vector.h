@@ -5,7 +5,6 @@
 
 
 namespace Geom {
-	const double PI = 3.14159265358979323846264338327950288419716939937510;
 	class Vector {
 	public:
 		double x, y, z;
@@ -37,7 +36,8 @@ namespace Geom {
 		NullVectorException(const Vector* v) : errorVector(v) {}
 	};
 
-	const Geom::Vector NULL_VECTOR(0, 0, 0);
+	const Vector NULL_VECTOR(0, 0, 0);
+	const Vector NORTH_VECTOR(0, 1, 0); // azimut vector
 };
 
 

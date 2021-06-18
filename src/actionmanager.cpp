@@ -6,6 +6,7 @@
 
 #include "events/keyboarddata.h"
 #include "events/mousebuttondata.h"
+#include "events/mousemotiondata.h"
 
 ActionManager* ActionManager::inst = nullptr;
 
@@ -60,17 +61,41 @@ void ActionManager::loop() {
 	}
 	// pulling input events
 	while (userEventLoop.pullEvent());
+	while (actionLoop.pullEvent());
 }
 
-Action ActionManager::getAction(const std::string& t) const {
+/* Action ActionManager::getAction(const std::string& t) const {
 	if (!isActionActive(t)) {
 		return Action(t, 0);
 	}
 	return actions.find(t)->second;
-}
+}*/
 
-bool ActionManager::isActionActive(const std::string& t) const {
+/*bool ActionManager::isActionActive(const std::string& t) const {
 	return actions.find(t) != actions.end();
+}*/
+
+
+void ActionManager::addAction(Action* action) {
+	//Broadcasting action into a queue
+	actionLoop.pushEvent(action);
+
+	// checking, if we need to activate or deactivate an action
+
+	/*switch (action->getType()) {
+	case InputEventType::MOUSE_BUTTON:
+	case InputEventType::KEYBOARD:
+		bool state = ev->state;
+		if (state) {
+			//mErr::oerr() << "Action activated: " << action.getType() << std::endl;
+			actions[action->getType()] = Action(*action);
+		}
+		else {
+			//mErr::oerr() << "Action deactivated: " << action.getType() << std::endl;
+			actions.erase(action->getType());
+		}
+		break;
+	}*/
 }
 
 std::list<InputEventType> ActionManager::acceptTypes() const {
@@ -89,25 +114,10 @@ void ActionManager::processEvent(const InputEvent* ev) {
 		mErr::oerr() << "No bindings to event!" << std::endl;
 		return;
 	}
-	// copying binded action
-	Action action = eventsToActions[*ev];
+	// copying binded action to make a pointer
+	Action* action = new Action(eventsToActions[*ev]);
 	
-	// checking, if we need to activate or deactivate an action
-
-	switch (ev->type) {
-	case InputEventType::MOUSE_BUTTON:
-	case InputEventType::KEYBOARD:
-		bool state = ev->state;
-		if (state) {
-			//mErr::oerr() << "Action activated: " << action.getType() << std::endl;
-			actions[action.getType()] = action;
-		}
-		else {
-			//mErr::oerr() << "Action deactivated: " << action.getType() << std::endl;
-			actions.erase(action.getType());
-		}
-		break;
-	}
+	addAction(action);
 }
 
 ActionManager* ActionManager::getInst() {
@@ -152,7 +162,7 @@ std::map<Action, std::list<InputEvent>> ActionManager::loadConfig(const std::str
 			continue;
 		}
 
-		Action currAction(actionType, 1);
+		//Action currAction(actionType, 1);
 		for (Yaml::Iterator ev_it = events.Begin(); ev_it != events.End(); ev_it++) {
 			std::string eventTypeStr = (*ev_it).first;
 			mErr::oerr() << eventTypeStr << std::endl;
@@ -166,23 +176,41 @@ std::map<Action, std::list<InputEvent>> ActionManager::loadConfig(const std::str
 				ev_deactivate.type = InputEventType::MOUSE_BUTTON;
 				ev_activate.data = new MouseButtonData((*ev_it).second["button"].As<std::string>());
 				ev_deactivate.data = new MouseButtonData((*ev_it).second["button"].As<std::string>());
+
+				res[Action(actionType + "_ON", 1)].push_back(ev_activate);
+				res[Action(actionType + "_OFF", 0)].push_back(ev_deactivate);
 			}
 			else if (eventTypeStr == "KEYBOARD") {
 				ev_activate.type = InputEventType::KEYBOARD;
 				ev_deactivate.type = InputEventType::KEYBOARD;
 				ev_activate.data = new KeyboardData((sf::Keyboard::Key)(*ev_it).second["key"].As<int>());
 				ev_deactivate.data = new KeyboardData((sf::Keyboard::Key)(*ev_it).second["key"].As<int>());
+
+				res[Action(actionType + "_ON", 1)].push_back(ev_activate);
+				res[Action(actionType + "_OFF", 0)].push_back(ev_deactivate);
+			}
+			else if (eventTypeStr == "MOUSE_MOTION") {
+				ev_activate.type = InputEventType::MOUSE_MOTION;
+				ev_activate.data = new MouseMotionData();
+				
+				res[Action(actionType, 1)].push_back(ev_activate);
 			}
 			else {
 				//ev_activate.type = InputEventType::UNKNOWN;
 				//ev_deactivate.type = InputEventType::UNKNOWN;
 				continue;
-			}
-
-			res[currAction].push_back(ev_activate);
-			res[currAction].push_back(ev_deactivate);
+			}			
 		}
 	}
+
+	/*mErr::oerr() << "Result config:" << std::endl;
+	for (auto it = res.begin(); it != res.end(); ++it) {
+		mErr::oerr() << it->first.getType() << ": " << std::endl;
+		for (auto it2 = it->second.begin(); it2 != it->second.end(); ++it2) {
+			mErr::oerr() << '\t' << (int)it2->getType() << ' ' << it2->state << std::endl;
+		}
+	}*/
+
 	return res;
 }
 

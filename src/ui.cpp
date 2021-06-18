@@ -2,7 +2,7 @@
 #include "exitwidget.h"
 #include "sceneevent.h"
 
-bool UI::init() {
+/*bool UI::init() {
 	bool success = true;
 	//mSceneEventLoop.subscribe(this, SCENE_EVENT);
 	currScene = new Widget(this);
@@ -30,4 +30,4 @@ void UI::processEvent(const Event* ev) {
 	currScene->cleanup();
 	delete currScene;
 	currScene = sceneEv->getScene();
-}
+}*/

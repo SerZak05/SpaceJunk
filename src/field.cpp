@@ -2,26 +2,24 @@
 #include "ship.h"
 #include "events/mousemotiondata.h"
 #include "actionmanager.h"
+#include "merrors.h"
 
-Field::Field() {
+Field::Field() : HierarchyNode({ 0, 0 }, 0, 1) {
 	ActionManager::getInst()->userEventLoop.subscribe(this);
 }
 
-Field::~Field() {
-	for (auto it = mObjects.begin(); it != mObjects.end(); ++it) {
-		delete (*it);
-	}
-}
+Field::~Field() {}
 
 bool Field::contains(GameObject* const obj) const {
-	return mObjects.find(obj) != mObjects.end();
+	return mChildren.find(obj) != mChildren.end();
 }
 
 bool Field::add(GameObject* const obj) {
 	if (contains(obj)) {
 		return false;
 	}
-	toAdd.push_back(obj);
+	//toAdd.push_back(obj);
+	addChild_queue(obj);
 	return true;
 }
 
@@ -29,35 +27,37 @@ bool Field::remove(GameObject* const obj) {
 	if (!contains(obj)) {
 		return false;
 	}
-	toRemove.push_back(obj);
+	//toRemove.push_back(obj);
+	deleteChild_queue(obj);
 	return true;
 }
 
 bool Field::init() { 
-	mObjects.insert(new Ship(this, Geom::Vector(100, 100)));
+	ActionManager::getInst()->userEventLoop.subscribe(this, InputEventType::MOUSE_MOTION);
+	mChildren.insert(new Ship(this, Geom::Vector(100, 100)));
 	return true;
 }
 
-void Field::loop(double delta) {
-	for (auto it = mObjects.begin(); it != mObjects.end(); ++it) {
+/*void Field::update(double delta) {
+	/*for (auto it = mChildren.begin(); it != mChildren.end(); ++it) {
 		(*it)->update(delta);
 	}
 	for (auto it = toAdd.begin(); it != toAdd.end(); ++it) {
-		mObjects.insert(*it);
+		addChild(*it);
 	}
 	toAdd.clear();
 	for (auto it = toRemove.begin(); it != toRemove.end(); ++it) {
-		mObjects.erase(*it);
-		delete (*it);
+		deleteChild(*it);
 	}
 	toRemove.clear();
-}
+	((HierarchyNode*)this)->HierarchyNode::update(delta);
+}*/
 
-void Field::draw(Drawer* const d) const {
-	for (auto it = mObjects.begin(); it != mObjects.end(); ++it) {
+/*void Field::draw(Drawer* const d) const {
+	for (auto it = mChildren.begin(); it != mChildren.end(); ++it) {
 		(*it)->draw(d);
 	}
-}
+}*/
 
 void Field::processEvent(const InputEvent* e) {
 	auto me = static_cast<const MouseMotionData*>(e->data);

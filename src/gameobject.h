@@ -2,12 +2,13 @@
 #include "vector.h"
 #include "field.h"
 #include "drawer.h"
+#include "hierarchynode.h"
 
 class Field;
 
-class GameObject {
+class GameObject : public HierarchyNode {
 public:
-	GameObject(Field*, const Geom::Vector& c = { 0, 0 }, double mass = 1);
+	GameObject(HierarchyNode*, const Geom::Vector& c = { 0, 0 }, double mass = 1);
 	virtual ~GameObject();
 
 	virtual void update(double delta) = 0;
@@ -15,14 +16,11 @@ public:
 
 	void applyForce(const Geom::Vector& force);
 
-	Geom::Vector getCoords() const;
 	Geom::Vector getVelosity() const;
 protected:
 	double mass;
-	Geom::Vector coords;
 	Geom::Vector velocity;
 	Geom::Vector currForce;
-	Field* mField;
 
 	// updates object`s motion (if needed in derived)
 	void move(double delta);

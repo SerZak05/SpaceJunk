@@ -31,7 +31,11 @@ public:
 	bool drawEllipse(const Rect&);
 
 	bool loadTexture(const std::string& path);
-	bool drawTexture(const std::string& name, double x, double y);
+	bool loadImage(const std::string& path);
+	//bool drawTexture(const std::string& name, double x, double y);
+	void drawSprite(const sf::Sprite&);
+	const sf::Texture* getTexture(const std::string&);
+	sf::Image getImage(const std::string&);
 	//bool drawTexture(const std::string& name, SDL_Rect* textureRect, SDL_Rect* renderRect);
 
 	void render();
@@ -41,10 +45,11 @@ private:
 	Drawer();
 	static Drawer* inst;
 
-	std::string mediaFolder = "assets/";
+	std::string mediaFolder;
 
 	sf::RenderWindow mWindow;
 	std::map<std::string, sf::Texture> mTextures;
+	std::map<std::string, sf::Image> mImages;
 
 	sf::Color mColor, bg;
 

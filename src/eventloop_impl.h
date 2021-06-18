@@ -36,7 +36,7 @@ bool EventLoop<EVENT_TYPE, EVENT_CLASS>::pullEvent() {
 
 	EVENT_CLASS* e = mEvents.front();
 	mEvents.pop();
-	std::set<Subscriber<EVENT_TYPE, EVENT_CLASS>*>& subs = mSubscribers[(EVENT_TYPE)(e->type)];
+	std::set<Subscriber<EVENT_TYPE, EVENT_CLASS>*>& subs = mSubscribers[(EVENT_TYPE)(e->getType())];
 	for (auto it = subs.begin(); it != subs.end(); ++it) {
 		(*it)->processEvent(e);
 	}

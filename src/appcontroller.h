@@ -4,7 +4,7 @@
 
 class UI;
 
-class AppController : Subscriber<EventType, Event> {
+class AppController : Subscriber<InputEventType, InputEvent> {
 public:
 	static AppController* getInst();
 	static void cleanup();
@@ -12,10 +12,10 @@ public:
 	void run();
 	void stop();
 
-	void processEvent(const Event*);
-	std::list<EventType> acceptTypes() const;
+	void processEvent(const InputEvent*);
+	std::list<InputEventType> acceptTypes() const;
 
-	UI ui;
+	// UI ui;
 private:
 	AppController();
 	~AppController();

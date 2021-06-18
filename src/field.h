@@ -5,10 +5,13 @@
 #include "drawer.h"
 #include "subscriber.h"
 #include "events/inputevent.h"
+#include "hierarchynode.h"
 
 class GameObject;
 
-class Field : public Subscriber<InputEventType, InputEvent> {
+class Field : public Subscriber<InputEventType, InputEvent>, 
+			public HierarchyNode 
+{
 public:
 	Field();
 	~Field();
@@ -19,19 +22,19 @@ public:
 	bool add(GameObject* const);	//false - it was contained, true - otherwise
 
 	bool init();
-	void loop(double delta);
+	//virtual void update(double delta);
 
-	void draw(Drawer* const) const;
+	// Already in HierarchyNode
+	// void draw(Drawer* const) const;
 
-	std::list<InputEventType> acceptTypes() const { return { InputEventType::MOUSE_MOTION }; }
+	// std::list<InputEventType> acceptTypes() const { return { InputEventType::MOUSE_MOTION }; }
 	void processEvent(const InputEvent*);
 
 	Geom::Vector getTargetedCoords() const;
 
 private:
-	std::unordered_set<GameObject*> mObjects;
-	std::list<GameObject*> toAdd;
-	std::list<GameObject*> toRemove;
+	// std::unordered_set<GameObject*> mObjects;
+	
 
 	Geom::Vector cursorPos;
 };

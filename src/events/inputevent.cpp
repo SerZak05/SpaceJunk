@@ -57,5 +57,8 @@ bool InputEvent::operator<(const InputEvent& b) const {
 	if (type != b.type) {
 		return type < b.type;
 	}
+	else if (state != b.state) {
+		return state < b.state;
+	}
 	return data->operator<(b.data);
 }

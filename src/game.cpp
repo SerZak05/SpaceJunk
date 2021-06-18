@@ -23,7 +23,7 @@ void Game::loop() {
 	static auto lastLoop = std::chrono::steady_clock::now();
 	auto currLoop = std::chrono::steady_clock::now();
 	std::chrono::duration<float> delta = currLoop - lastLoop;
-	currField->loop(delta.count());
+	currField->update(delta.count());
 	lastLoop = currLoop;
 }
 

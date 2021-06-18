@@ -1,4 +1,5 @@
 #include "bullet.h"
+#include "merrors.h"
 
 Bullet::Bullet(Field* f, const Geom::Vector& pos, const Geom::Vector& vel, float lifetime, double mass) : 
 	GameObject(f, pos, mass), lifetime(lifetime) {
@@ -8,7 +9,7 @@ Bullet::Bullet(Field* f, const Geom::Vector& pos, const Geom::Vector& vel, float
 void Bullet::update(double delta) {
 	lifetime -= delta;
 	if (lifetime <= 0) {
-		mField->remove(this);
+		mParent->deleteChild_queue(this);
 		return;
 	}
 	move(delta);
@@ -16,5 +17,7 @@ void Bullet::update(double delta) {
 
 void Bullet::draw(Drawer* const d) const {
 	d->setColor(200, 0, 0);
-	d->drawPoint(coords);
+	Geom::Vector globalCoords = getGlobalCoords();
+	d->drawRect(globalCoords - Geom::Vector(20, 20), globalCoords + Geom::Vector(20, 20));
+	// mErr::oerr() << "Bullet drawn!" << std::endl;
 }

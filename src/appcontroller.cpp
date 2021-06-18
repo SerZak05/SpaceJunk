@@ -9,7 +9,7 @@ AppController* AppController::inst = nullptr;
 
 AppController::AppController() {}
 AppController::~AppController() {
-	ui.cleanup();
+	// ui.cleanup();
 	Game::cleanup();
 	Drawer::cleanup();
 }
@@ -18,11 +18,12 @@ bool AppController::init() {
 	mErr::oerr() << "I`m working." << std::endl;
 	bool success = true;
 	
-	mErr::maccept(ui.init(), "Failed to init UI!", success);
+	// mErr::maccept(ui.init(), "Failed to init UI!", success);
 	mErr::maccept(Game::getInst()->init(), "Failed to init Game!", success);
 	//mErr::maccept(mDrawer.loadTexture("circle.png"), "Failed to load image!", success);
 
-	ui.eventLoop.subscribe(this);
+	// ui.eventLoop.subscribe(this);
+	ActionManager::getInst()->userEventLoop.subscribe(this);
 	return success;
 }
 
@@ -40,7 +41,8 @@ AppController* AppController::getInst() {
 void AppController::run() {
 	Running = true;
 	while (Running) {
-		ui.update();
+		// ui.update();
+		// pause ???
 		ActionManager::getInst()->loop();
 		Game::getInst()->loop();
 		Game::getInst()->draw(Drawer::getInst());
@@ -60,10 +62,10 @@ void AppController::cleanup() {
 	delete inst;
 }
 
-void AppController::processEvent(const Event*) {
+void AppController::processEvent(const InputEvent*) {
 	stop();
 }
 
-std::list<EventType> AppController::acceptTypes() const {
-	return { EXIT_EVENT };
+std::list<InputEventType> AppController::acceptTypes() const {
+	return { InputEventType::QUIT };
 }

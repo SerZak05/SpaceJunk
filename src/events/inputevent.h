@@ -17,6 +17,7 @@ public:
 	~InputEvent();
 
 	InputEventType type;
+	InputEventType getType() const { return type; };
 	// indicates pressed or released button is, true if axis
 	bool state;
 	// Data class of the event, inheritors provide specific info, depending on type of event

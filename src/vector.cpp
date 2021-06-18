@@ -51,11 +51,11 @@ double Vector::angleBetween(const Vector& v) const {
 	if (v.isNull()) {
 		throw NullVectorException(&v);
 	}
-	return ((*this * v) / (mag() * v.mag())) * sign(crossmult(*this, v));
+	return acos((*this * v) / (mag() * v.mag())) * sign(crossmult(*this, v));
 }
 
 double Vector::azimut() const {
-	return Vector(0, 1, 0).angleBetween(*this);
+	return NORTH_VECTOR.angleBetween(*this);
 }
 
 Vector& Vector::norm() {

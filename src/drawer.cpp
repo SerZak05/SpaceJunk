@@ -5,7 +5,8 @@
 
 Drawer::Drawer() : mWindow(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "SpaceJunk")
 {
-	bg.r = bg.g = bg.b = 100;
+	mediaFolder = "../SpaceJunk/assets/";
+	bg.r = bg.g = bg.b = 0;
 }
 
 Drawer* Drawer::inst = nullptr;
@@ -32,11 +33,27 @@ bool Drawer::loadTexture(const std::string& name) {
 		sf::Texture newTexture;
 		if (!newTexture.loadFromFile(mediaFolder + name)) {
 			// errors.add(...)
-			mErr::oerr() << "Failed to load image: " << name << std::endl;
+			mErr::oerr() << "Failed to load texture: " << name << std::endl;
 			success = false; //= errors.isNotEmpty()
 		}
 		else {
 			mTextures[name] = newTexture;
+		}
+	}
+	return success;
+}
+
+bool Drawer::loadImage(const std::string& name) {
+	bool success = true;
+	if (mTextures.find(name) == mTextures.end()) {
+		sf::Image newImage;
+		if (!newImage.loadFromFile(mediaFolder + name)) {
+			// errors.add(...)
+			mErr::oerr() << "Failed to load image: " << name << std::endl;
+			success = false; //= errors.isNotEmpty()
+		}
+		else {
+			mImages[name] = newImage;
 		}
 	}
 	return success;
@@ -104,7 +121,7 @@ bool Drawer::drawEllipse(const Geom::Vector& a, const Geom::Vector& b) {
 	return true;
 }
 
-bool Drawer::drawTexture(const std::string& name, double x, double y) {
+/*bool Drawer::drawTexture(const std::string& name, double x, double y) {
 	bool success = true;
 	if (mTextures.find(name) == mTextures.end()) {
 		//errors.add(...)
@@ -117,6 +134,26 @@ bool Drawer::drawTexture(const std::string& name, double x, double y) {
 		mWindow.draw(sprite);
 	}
 	return success;
+}*/
+
+void Drawer::drawSprite(const sf::Sprite& sp) {
+	mWindow.draw(sp);
+}
+
+const sf::Texture* Drawer::getTexture(const std::string& name) {
+	if (mTextures.find(name) == mTextures.end()) {
+		mErr::oerr() << "Did not find texture: " << name << std::endl;
+		return nullptr;
+	}
+	return &(mTextures[name]);
+}
+
+sf::Image Drawer::getImage(const std::string& name) {
+	if (mImages.find(name) == mImages.end()) {
+		mErr::oerr() << "Did not find image: " << name << std::endl;
+		return sf::Image();
+	}
+	return mImages[name];
 }
 
 void Drawer::render() {
