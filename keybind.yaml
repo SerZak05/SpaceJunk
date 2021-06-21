@@ -1,0 +1,19 @@
+# File of keybinds that player is using to control ship
+
+Buttons:
+    UP:
+        KEYBOARD:
+            key: 22
+    DOWN:
+        KEYBOARD:
+            key: 18
+    LEFT:
+        KEYBOARD:
+            key: 0
+    RIGHT:
+        KEYBOARD:
+            key: 3  
+    SHOOT_MAIN:
+        MOUSE_BUTTON:
+            button: LEFT
+Axis:
