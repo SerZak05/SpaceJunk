@@ -16,6 +16,6 @@ jobs:
     - run: ls
 
     - name: building
-    - uses: nicledomaS/cmake_build_action@v1.4
+      uses: nicledomaS/cmake_build_action@v1.4
 
     - run: ls
