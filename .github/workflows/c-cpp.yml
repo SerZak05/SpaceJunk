@@ -16,7 +16,7 @@ jobs:
     - name: Downloading SFML
       run: |
         pwd
-        Import-Module bitstransfer start-bitstransfer -source https://www.sfml-dev.org/files/SFML-2.5.1-sources.zip -destination c:\SFML-2.5.1.zip
+        Invoke-WebRequest https://www.sfml-dev.org/files/SFML-2.5.1-sources.zip -Outfile c:\SFML-2.5.1.zip
         unzip SFML.zip
         ls
 
