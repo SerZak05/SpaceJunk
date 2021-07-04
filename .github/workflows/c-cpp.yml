@@ -24,7 +24,7 @@ jobs:
       run: |
         mkdir gcc
         cd gcc
-        Invoke-WebRequest https://ftp.gnu.org/gnu/gcc/gcc-7.3.0/gcc-7.3.0.tar.xz -Outflle D:\a\SpaceJunk\SpaceJunk\gcc\gcc-7.3.0.tar.xz
+        Invoke-WebRequest https://ftp.gnu.org/gnu/gcc/gcc-7.3.0/gcc-7.3.0.tar.xz -Outfile D:\a\SpaceJunk\SpaceJunk\gcc\gcc-7.3.0.tar.xz
         tar -xf gcc-7.3.0.tar.xz
     
     - name: building
