@@ -25,7 +25,7 @@ jobs:
         mkdir build
         cd build
         cmake -G "Unix Makefiles" ..
-        make
+        mingw64-make
         ls
 
     - run: ls
