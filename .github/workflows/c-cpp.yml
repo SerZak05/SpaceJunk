@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-
+    # Using windows because it instals SFML deps
     runs-on: windows-latest
 
     steps:
@@ -17,7 +17,8 @@ jobs:
       run: |
         pwd
         Invoke-WebRequest https://www.sfml-dev.org/files/SFML-2.5.1-sources.zip -Outfile D:\a\SpaceJunk\SpaceJunk\SFML-2.5.1.zip
-        unzip SFML-2.5.1.zip -d SFML
+        unzip SFML-2.5.1.zip
+        Rename-Item SFML-2.5.1 SFML
         ls
 
     - name: building
