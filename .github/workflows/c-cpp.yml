@@ -17,7 +17,7 @@ jobs:
       run: |
         pwd
         Invoke-WebRequest https://www.sfml-dev.org/files/SFML-2.5.1-sources.zip -Outfile D:\a\SpaceJunk\SpaceJunk\SFML-2.5.1.zip
-        unzip SFML.zip
+        unzip SFML-2.5.1.zip
         ls
 
     - name: building
