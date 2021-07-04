@@ -4,7 +4,7 @@ project(SpaceJunk)
 
 set(YAML_LIB yaml/yaml.cpp)
 set(SOURCE_DIR src/)
-set(SFML_DIR SFML-2.5.1/)
+set(SFML_DIR SFML/)
 
 # SFML lib
 add_subdirectory(${SFML_DIR})
