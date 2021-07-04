@@ -4,13 +4,15 @@ project(SpaceJunk)
 
 set(YAML_LIB yaml/yaml.cpp)
 set(SOURCE_DIR src/)
+set(SFML_DIR SFML/)
 
-# SFML dep
-find_library(SFML REQUIRED)
+# SFML lib
+add_subdirectory(${SFML_DIR})
 
+#YAML lib
 add_library(YAML STATIC ${YAML_LIB})
 
 include_directories(${SOURCE_DIR})
 add_executable(${PROJECT_NAME} ${SOURCE_DIR}main.cpp)
 
-target_link_libraries(main YAML)
+target_link_libraries(main YAML ${SFML_DIR})
