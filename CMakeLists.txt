@@ -15,4 +15,4 @@ add_library(YAML STATIC ${YAML_LIB})
 include_directories(${SOURCE_DIR})
 add_executable(${PROJECT_NAME} ${SOURCE_DIR}main.cpp)
 
-target_link_libraries(main YAML ${SFML_DIR})
+target_link_libraries(${PROJECT_NAME} YAML ${SFML_DIR})
