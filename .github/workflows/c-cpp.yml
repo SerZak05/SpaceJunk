@@ -13,9 +13,17 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     
-    - run: ls
+    - name: Downloading SFML
+      run: |
+        wget -vO - https://www.sfml-dev.org/files/SFML-2.5.1-sources.zip | unzip
+        ls
 
     - name: building
-      uses: nicledomaS/cmake_build_action@v1.4
+      run: |
+        mkdir build
+        cd build
+        cmake ..
+        make
+        ls
 
     - run: ls
