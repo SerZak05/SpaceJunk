@@ -8,19 +8,10 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v2
-    
-    - name: Downloading SFML deps
-      run: |
-        wget -qO freetype.tar.gz https://download.savannah.gnu.org/releases/freetype/freetype-2.10.4.tar.gz
-        tar -xf freetype.tar.gz freetype
-        echo "freetype done"
-        
-        sudo apt install x11
-        echo "x11 done"
     
     - name: Downloading SFML
       run: |
