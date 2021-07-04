@@ -15,7 +15,8 @@ jobs:
     
     - name: Downloading SFML
       run: |
-        wget -vO - https://www.sfml-dev.org/files/SFML-2.5.1-sources.zip | unzip
+        wget -O SFML.zip https://www.sfml-dev.org/files/SFML-2.5.1-sources.zip
+        unzip SFML.zip SFML
         ls
 
     - name: building
