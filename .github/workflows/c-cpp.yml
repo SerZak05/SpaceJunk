@@ -17,7 +17,7 @@ jobs:
       run: |
         pwd
         Invoke-WebRequest https://www.sfml-dev.org/files/SFML-2.5.1-sources.zip -Outfile d:\SFML-2.5.1.zip
-        ls -la
+        ls
         unzip SFML.zip
         ls
 
