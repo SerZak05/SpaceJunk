@@ -8,6 +8,7 @@ set(SFML_DIR SFML/)
 
 # SFML lib
 add_subdirectory(${SFML_DIR})
+include_directories(${SFML_DIR}/include)
 
 #YAML lib
 add_library(YAML STATIC ${YAML_LIB})
