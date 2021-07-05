@@ -8,7 +8,7 @@ on:
 jobs:
   build:
     # Using windows because it instals SFML deps
-    runs-on: linux-latest
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
