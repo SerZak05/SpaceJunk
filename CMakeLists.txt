@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 
 project(SpaceJunk)
 
-set(YAML_LIB yaml/yaml.cpp)
+set(YAML_LIB yaml/Yaml.cpp)
 set(SOURCE_DIR src/)
 
 # SFML lib
