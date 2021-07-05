@@ -24,10 +24,10 @@ jobs:
       run: |
         mkdir gcc
         cd gcc
-        ls
         Invoke-WebRequest https://ftp.gnu.org/gnu/gcc/gcc-7.3.0/gcc-7.3.0.tar.xz -MaximumRetryCount 10 -Outfile D:\a\SpaceJunk\SpaceJunk\gcc\gcc-7.3.0.tar.xz
         ls
-        tar -xf gcc-7.3.0.tar.xz
+        tar -xvzf gcc-7.3.0.tar.xz
+        ls
     
     - name: building
       run: |
