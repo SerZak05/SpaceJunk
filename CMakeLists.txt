@@ -7,8 +7,7 @@ set(SOURCE_DIR src/)
 set(SFML_DIR SFML-2.5.1/)
 
 # SFML lib
-add_subdirectory(${SFML_DIR})
-include_directories(${SFML_DIR}/include)
+find_library(SFML REQUIRED)
 
 #YAML lib
 add_library(YAML STATIC ${YAML_LIB})
