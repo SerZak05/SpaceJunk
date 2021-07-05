@@ -17,7 +17,6 @@ add_executable(${PROJECT_NAME}
   ${SOURCE_DIR}actionmanager.cpp
   ${SOURCE_DIR}appcontroller.cpp
   ${SOURCE_DIR}bullet.cpp
-  ${SOURCE_DIR}create_gameobject_action.cpp
   ${SOURCE_DIR}drawer.cpp
   ${SOURCE_DIR}event.cpp
   ${SOURCE_DIR}exitwidget.cpp
