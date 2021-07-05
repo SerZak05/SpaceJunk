@@ -16,7 +16,7 @@ jobs:
     - name: Downloading SFML
       run: |
         pwd
-        Invoke-WebRequest https://www.sfml-dev.org/files/SFML-2.5.1-sources.zip -MaximumRetryCount 10 -Outfile D:\a\SpaceJunk\SpaceJunk\SFML-2.5.1.zip
+        Invoke-WebRequest https://www.sfml-dev.org/files/SFML-2.5.1-sources.zip -Outfile D:\a\SpaceJunk\SpaceJunk\SFML-2.5.1.zip
         unzip SFML-2.5.1.zip
         ls
     
@@ -24,7 +24,9 @@ jobs:
       run: |
         mkdir gcc
         cd gcc
-        Invoke-WebRequest https://ftp.gnu.org/gnu/gcc/gcc-7.3.0/gcc-7.3.0.tar.xz -Outfile D:\a\SpaceJunk\SpaceJunk\gcc\gcc-7.3.0.tar.xz
+        ls
+        Invoke-WebRequest https://ftp.gnu.org/gnu/gcc/gcc-7.3.0/gcc-7.3.0.tar.xz -MaximumRetryCount 10 -Outfile D:\a\SpaceJunk\SpaceJunk\gcc\gcc-7.3.0.tar.xz
+        ls
         tar -xf gcc-7.3.0.tar.xz
     
     - name: building
