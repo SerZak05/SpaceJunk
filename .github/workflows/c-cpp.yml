@@ -17,7 +17,9 @@ jobs:
       run: |
         pwd
         sudo apt-get install libsfml-dev
-        ls /usr/
+        ls -la /usr/lib
+        ls -la /usr/lib32
+        ls -la /usr/lib64
     
     - name: building
       run: |
