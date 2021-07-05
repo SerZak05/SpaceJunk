@@ -4,10 +4,9 @@ project(SpaceJunk)
 
 set(YAML_LIB yaml/yaml.cpp)
 set(SOURCE_DIR src/)
-set(SFML_DIR SFML-2.5.1/)
 
 # SFML lib
-find_library(SFML REQUIRED)
+include_directories(/usr/include/)
 
 #YAML lib
 add_library(YAML STATIC ${YAML_LIB})
