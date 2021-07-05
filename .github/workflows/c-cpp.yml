@@ -8,32 +8,22 @@ on:
 jobs:
   build:
     # Using windows because it instals SFML deps
-    runs-on: windows-latest
+    runs-on: linux-latest
 
     steps:
     - uses: actions/checkout@v2
     
-    - name: Downloading SFML
+    - name: Installing SFML
       run: |
         pwd
-        Invoke-WebRequest https://www.sfml-dev.org/files/SFML-2.5.1-sources.zip -Outfile D:\a\SpaceJunk\SpaceJunk\SFML-2.5.1.zip
-        unzip SFML-2.5.1.zip
-        ls
-    
-    - name: Installing gcc
-      run: |
-        mkdir gcc
-        cd gcc
-        Invoke-WebRequest https://ftp.gnu.org/gnu/gcc/gcc-7.3.0/gcc-7.3.0.tar.xz -MaximumRetryCount 10 -Outfile D:\a\SpaceJunk\SpaceJunk\gcc\gcc-7.3.0.tar.xz
-        ls
-        tar -xvzf gcc-7.3.0.tar.xz
+        sudo apt-get install libsfml-dev
         ls
     
     - name: building
       run: |
         mkdir build
         cd build
-        cmake -G "Unix Makefiles" -D CMAKE_C_COMPILER=gcc\gcc-7.3.0 ..
+        cmake -G "Unix Makefiles" ..
         make
         ls
 
