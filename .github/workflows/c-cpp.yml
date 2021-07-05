@@ -17,7 +17,7 @@ jobs:
       run: |
         pwd
         sudo apt-get install libsfml-dev
-        whereis SFML
+        ls /usr/include/SFML
     
     - name: building
       run: |
